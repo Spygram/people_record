@@ -31,6 +31,12 @@ pipeline {
                 sh "docker build -t ${IMAGE_REPO}/frontend:${IMAGE_TAG} ./public"
                 sh "docker push ${IMAGE_REPO}/frontend:${IMAGE_TAG}"
             }
+            steps {
+                echo 'Building backend Docker image...'
+                // Builds and tags the image using your variables
+                sh "docker build -t ${IMAGE_REPO}/backend:${IMAGE_TAG} ./backend"
+                sh "docker push ${IMAGE_REPO}/backend:${IMAGE_TAG}"
+            }
         }
     }
 
