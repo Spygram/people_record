@@ -8,9 +8,7 @@ COPY backend/package*.json ./
 # Install dependencies
 RUN npm install
 
-COPY .env .
-
-COPY backend/app.js ./backend/
+COPY backend/app.js .
 
 # Expose app port
 EXPOSE 3000
