@@ -8,10 +8,10 @@ COPY backend/package*.json ./
 # Install dependencies
 RUN npm install
 
-COPY backend/app.js .
+COPY app.js .
 
 # Expose app port
 EXPOSE 3000
 
 # Run the app
-CMD ["node", "backend/app.js"]
+CMD ["node", "app.js"]
