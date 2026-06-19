@@ -58,18 +58,18 @@ variable "target_env" {
 variable "db_username" {
   description = "Administrator master username for the RDS PostgreSQL database"
   type        = string
-  //default     = "dbadmin"
+  default     = "dbadmin"
 }
 
 variable "db_password" {
   description = "Administrator master password for the RDS instance. Must be at least 8 characters."
   type        = string
   sensitive   = true # Hides the value from printing in the terminal and deployment logs
-  //default     = "s3cr3t#123"
+  default     = "s3cr3t#123"
 }
 
 variable "db_name" {
   description = "Name of the initial database to create in the RDS instance"
   type        = string
-  //default     = "pplmgtdb"
+  default     = "pplmgtdb"
 }
