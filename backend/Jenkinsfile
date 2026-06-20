@@ -28,7 +28,7 @@ pipeline {
             steps {
                 echo 'Building backend Docker image...'
                 // Builds and tags the image using your variables
-                sh "docker build -t ${IMAGE_REPO}/backend:${IMAGE_TAG} ./backend"
+                sh "docker build -t ${IMAGE_REPO}/backend:${IMAGE_TAG} -t ${IMAGE_REPO}/backend:latest ./backend"
                 sh "docker push ${IMAGE_REPO}/backend:${IMAGE_TAG}"
                 sh "docker push ${IMAGE_REPO}/backend:latest"
             }
@@ -37,10 +37,10 @@ pipeline {
 
     post {
         success {
-            echo 'Frontend build and push completed successfully!'
+            echo 'Backend build and push completed successfully!'
         }
         failure {
-            echo 'Frontend pipeline failed. Check logs.'
+            echo 'Backend pipeline failed. Check logs.'
         }
     }
 }
