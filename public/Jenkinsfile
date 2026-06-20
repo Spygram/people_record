@@ -30,6 +30,7 @@ pipeline {
                 // Builds and tags the image using your variables
                 sh "docker build -t ${IMAGE_REPO}/frontend:${IMAGE_TAG} ./public"
                 sh "docker push ${IMAGE_REPO}/frontend:${IMAGE_TAG}"
+                sh "docker push ${IMAGE_REPO}/frontend:latest"
             }            
         }
     }
