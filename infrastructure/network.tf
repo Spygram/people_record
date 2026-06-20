@@ -1,10 +1,10 @@
 resource "aws_vpc" "main" {
-    cidr_block           = var.vpc_cidr
-    enable_dns_hostnames = true
-    enable_dns_support   = true
-        tags = {
-            Name = "${var.target_env}-vpc"
-        }
+  cidr_block           = var.vpc_cidr
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+  tags = {
+    Name = "${var.target_env}-vpc"
+  }
 }
 
 # Create an Internet Gateway and attach it to the VPC

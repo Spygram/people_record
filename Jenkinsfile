@@ -32,8 +32,14 @@ pipeline{
                     withCredentials([sshUserPrivateKey(credentialsId: 'appserverkey', keyFileVariable: 'SSH_KEY', usernameVariable: 'SSH_USER')]) {
                         sh '''
                             echo "copying dokcer-compose file to deploymenet server"
-                         scp -i "$SSH_KEY" -o StrictHostKeyChecking=no docker-compose-build.yaml ubuntu@"${APP_SERVER}":~/docker-compose.yaml
-                         ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no ubuntu@"${APP_SERVER}" "
+                         scp -i "$SSH_KEY" -o StrictHostKeyChecking=no docker-compose-build.yaml ${SSH_USER}@${APP_SERVER}:~/docker-compose.yaml
+                         ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no ${SSH_USER}@${APP_SERVER} << 'ENDSSH'
+                            export DB_HOST="dev-postgres.cknc7nre3tg3.us-east-1.rds.amazonaws.com"
+                            export DB_PORT=5432
+                            export APP_PORT=3000
+                            export DB_USER="dbadmin"
+                            export DB_NAME="dev-postgres"
+                            export DB_PASSWORD="s3cr3t#123"
                             docker compose down
                             sleep 10 
                             docker compose up -d

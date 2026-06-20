@@ -42,9 +42,9 @@ resource "aws_security_group" "app_server_sg" {
   vpc_id = aws_vpc.main.id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
     security_groups = [aws_security_group.jenkins_sg.id]
   }
   ingress {
@@ -63,12 +63,12 @@ resource "aws_security_group" "app_server_sg" {
 
 # Public VM with Jenkins Remote Provisioner
 resource "aws_instance" "jenkins_server" {
-  ami                   = data.aws_ami.ubuntu.id
-  instance_type         = var.instance_type
-  subnet_id             = aws_subnet.public_subnet.id
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = var.instance_type
+  subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
-  key_name              = aws_key_pair.deployer_key.key_name
-  iam_instance_profile  = data.aws_iam_instance_profile.labInstanceProfile.name
+  key_name               = aws_key_pair.deployer_key.key_name
+  iam_instance_profile   = data.aws_iam_instance_profile.labInstanceProfile.name
 
   tags = { Name = "${var.target_env}-jenkins-server" }
 
@@ -94,16 +94,20 @@ resource "aws_instance" "jenkins_server" {
 }
 
 resource "aws_instance" "app_server" {
-  ami                   = data.aws_ami.ubuntu.id
-  instance_type         = var.instance_type
-  subnet_id             = aws_subnet.public_subnet.id
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = var.instance_type
+  subnet_id              = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.app_server_sg.id]
-  key_name              = aws_key_pair.deployer_key.key_name
-  iam_instance_profile  = data.aws_iam_instance_profile.labInstanceProfile.name
+  key_name               = aws_key_pair.deployer_key.key_name
+  iam_instance_profile   = data.aws_iam_instance_profile.labInstanceProfile.name
 
   tags = { Name = "${var.target_env}-app-server" }
 
- 
+  user_data = file("${path.module}/install_docker.sh")
+  
+  user_data_replace_on_change = true
+
+
 }
 
 
