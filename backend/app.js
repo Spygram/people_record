@@ -71,10 +71,16 @@ async function initDb(retries = 10, delay = 3000) {
 
 
 /* ------------------ MIDDLEWARE ------------------ */
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('public'));
-app.use(cors());
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '../public')));
+
 /* ------------------ ROUTES ------------------ */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -124,6 +130,6 @@ app.post('/delete', async (req, res) => {
 (async () => {
   await initDb();   // 👈 DB schema guaranteed
   app.listen(port, () => {
-    console.log(`🚀 Server running at http://localhost:${port}`);
+    console.log(`🚀 Server running at ${port}`);
   });
 })();
