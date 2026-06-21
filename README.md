@@ -1,9 +1,9 @@
 ## Environment Variables required for docker-compose
 ```bash
-DB_HOST=dev-postgres.cknc7nre3tg3.us-east-1.rds.amazonaws.com
-DB_PORT=5432
-DB_USER=dbadmin
-DB_PASSWORD=s3cr3t#123
+DB_HOST=<RDS Endpoint>
+DB_PORT=<5432 for Postgresql>
+DB_USER=<DB_Username>
+DB_PASSWORD=<DB_Password>
 DB_NAME=postgres
 
 APP_SERVER=10.0.1.101
