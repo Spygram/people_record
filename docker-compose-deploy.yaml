@@ -3,11 +3,12 @@ version: '3.8'
 services:
   backend:
     image: spygram/backend:${BACKEND_VERSION:-latest}
-    # ports:
-    #   - "${APP_PORT:-3000}:3000"
-    network_mode: host
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    networks:
+      - app-network
     environment:
-      - PORT=3000
+      - PORT=${APP_PORT:-3000}
       - DB_USER=${DB_USER}
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
@@ -17,9 +18,14 @@ services:
 
   frontend:
     image: spygram/frontend:${FRONTEND_VERSION:-latest}
-    # ports:
-    #   - "80:80"
-    network_mode: host
+    ports:
+      - "80:80"
+    networks:
+      - app-network
     depends_on:
       - backend
     restart: always
+
+networks:
+  app-network:
+    driver: bridge
