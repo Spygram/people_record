@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 /* ------------------ DB CONNECTION ------------------ */
 const pool = new Pool({
   user: process.env.DB_USER,
-  host: process.env.DB_HOST,   // MUST be service name: postgres
+  host: process.env.DB_HOST,   
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: parseInt(process.env.DB_PORT, 10),
@@ -45,8 +45,17 @@ async function initDb(retries = 10, delay = 3000) {
 
       console.log('✅ Database initialized (person table ready)');
       return;
-    } catch (err) {
+    } 
+    catch (err) {
+      // retries--;
+      // console.log(`⏳ Waiting for database... retries left: ${retries}`);
+      // await new Promise(res => setTimeout(res, delay));
       retries--;
+
+      console.error("❌ Database connection error:");
+      console.error(err);
+      console.error("Message:", err.message);
+
       console.log(`⏳ Waiting for database... retries left: ${retries}`);
       await new Promise(res => setTimeout(res, delay));
     }
