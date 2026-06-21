@@ -13,8 +13,6 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_PORT=${DB_PORT:-5432}
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     restart: always
 
   frontend:
