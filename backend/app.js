@@ -20,22 +20,7 @@ const pool = new Pool({
 });
 
 /* ------------------ DB INIT (IMPORTANT PART) ------------------ */
-/*async function initDb() {
-  try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS person (
-        serial_number SERIAL PRIMARY KEY,
-        name TEXT,
-        age INT
-      )
-    `);
 
-    console.log('✅ Database initialized (person table ready)');
-  } catch (err) {
-    console.error('❌ Database initialization failed', err);
-    process.exit(1); // stop app if DB is broken
-  }
-}*/ //init check1
 async function initDb(retries = 10, delay = 3000) {
   while (retries) {
     try {
@@ -51,9 +36,6 @@ async function initDb(retries = 10, delay = 3000) {
       return;
     } 
     catch (err) {
-      // retries--;
-      // console.log(`⏳ Waiting for database... retries left: ${retries}`);
-      // await new Promise(res => setTimeout(res, delay));
       retries--;
 
       console.error("❌ Database connection error:");
@@ -76,6 +58,7 @@ app.use(cors({
   methods: ["GET", "POST", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
 }));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // app.use(express.static('public'));
