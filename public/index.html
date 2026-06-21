@@ -2,13 +2,11 @@
 <html>
 <head>
   <title>Add Person Detail</title>
-  <!-- Link external CSS for styling -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Add a Person</h1>
 
-  <!-- Form to add a new person -->
   <form id="personForm">
     <label> Full Name: <input type="text" name="name" required></label><br><br>
     <label>Age: <input type="number" name="age" required></label><br><br>
@@ -17,7 +15,6 @@
 
   <h2>People List</h2>
 
-  <!-- Table to display all people -->
   <table id="peopleTable">
     <tr>
       <th>SN</th>
@@ -28,16 +25,15 @@
   </table>
 
   <script>
-    // Get references to table and form
+    const API_BASE = "http://3.239.216.252:3000";
+
     const table = document.getElementById('peopleTable');
     const form = document.getElementById('personForm');
 
-    // Function to fetch and render all people
     async function loadPeople() {
-      const res = await fetch('/people'); // fetch data from server
+      const res = await fetch(`${API_BASE}/people`);
       const people = await res.json();
 
-      // Clear table except header
       table.innerHTML = `
         <tr>
           <th>SN</th>
@@ -47,52 +43,48 @@
         </tr>
       `;
 
-      // Loop through each person and display in table
       people.forEach((p, index) => {
         const row = table.insertRow();
 
-        // Continuous SN numbering (1,2,3...)
         row.insertCell(0).textContent = index + 1;
-
-        // Display name and age
         row.insertCell(1).textContent = p.name;
         row.insertCell(2).textContent = p.age;
 
-        // Create Delete button
         const delCell = row.insertCell(3);
         const btn = document.createElement('button');
         btn.textContent = 'Delete';
-        btn.classList.add('delete-btn'); // Apply red styling
+        btn.classList.add('delete-btn');
+
         btn.onclick = async () => {
-          await fetch('/delete', {
+          await fetch(`${API_BASE}/delete`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: p.serial_number }) // use DB ID for deletion
+            body: JSON.stringify({ id: p.serial_number })
           });
-          loadPeople(); // Refresh table after deletion
+
+          loadPeople();
         };
+
         delCell.appendChild(btn);
       });
     }
 
-    // Handle form submission
     form.addEventListener('submit', async (e) => {
-      e.preventDefault(); // Prevent page reload
+      e.preventDefault();
+
       const formData = new FormData(form);
       const data = Object.fromEntries(formData);
 
-      // Send POST request to server to add new person
-      await fetch('/submit', {
+      await fetch(`${API_BASE}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
 
-      form.reset();   // Clear form
-      loadPeople();   // Refresh table after adding
+      form.reset();
+      loadPeople();
     });
 
-    // Load people table on initial page load
     loadPeople();
   </script>
 </body>
