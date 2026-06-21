@@ -9,14 +9,14 @@ services:
     container_name: node_backend
     expose:
       - "3000"
-    environment:
-      - PORT=${APP_PORT}
-      - DB_HOST=${DB_HOST}
-      - DB_PORT=${DB_PORT}
-      # 👇 Translating your Terraform variables for app.js
-      - DB_USER=${var.db_username}
-      - DB_PASSWORD=${var.db_password}
-      - DB_NAME=${var.db_name}
+    # environment:
+    #   - PORT=${APP_PORT}
+    #   - DB_HOST=${DB_HOST}
+    #   - DB_PORT=${DB_PORT}
+    #   # 👇 Translating your Terraform variables for app.js
+    #   - DB_USER=${var.db_username}
+    #   - DB_PASSWORD=${var.db_password}
+    #   - DB_NAME=${var.db_name}
     networks:
       - app-network
     restart: always
