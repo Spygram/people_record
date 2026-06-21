@@ -1,6 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const path = require('path');
+const cors = require('cors');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const app = express();
@@ -73,7 +74,7 @@ async function initDb(retries = 10, delay = 3000) {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
-
+app.use(cors());
 /* ------------------ ROUTES ------------------ */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
