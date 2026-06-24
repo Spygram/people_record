@@ -5,7 +5,7 @@ pipeline {
         string(name: 'FRONTEND_VERSION', defaultValue: "latest", description: 'Tag for the Frontend Docker image')
     }
         environment {
-        APP_SERVER = "10.0.1.101" 
+        APP_SERVER = "10.0.1.242" 
     }
 
     

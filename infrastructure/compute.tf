@@ -107,6 +107,12 @@ resource "aws_instance" "kind_cluster" {
   key_name               = aws_key_pair.deployer_key.key_name
   iam_instance_profile   = data.aws_iam_instance_profile.labInstanceProfile.name
 
+  root_block_device {
+    volume_size = 32
+    volume_type = "gp3"
+    delete_on_termination = true
+  }
+
   tags = { Name = "${var.target_env}-kind-cluster" }
 
   user_data = file("${path.module}/install_docker_kind.sh")
