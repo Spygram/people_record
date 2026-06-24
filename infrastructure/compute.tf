@@ -37,8 +37,8 @@ resource "aws_security_group" "jenkins_sg" {
   }
 }
 
-resource "aws_security_group" "app_server_sg" {
-  name   = "${var.target_env}-app-server-sg"
+resource "aws_security_group" "kind_cluster_sg" {
+  name   = "${var.target_env}-kind-cluster-sg"
   vpc_id = aws_vpc.main.id
 
   ingress {
@@ -99,17 +99,17 @@ resource "aws_instance" "jenkins_server" {
   }
 }
 
-resource "aws_instance" "app_server" {
+resource "aws_instance" "kind_cluster" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
+  instance_type          = "t2.large"
   subnet_id              = aws_subnet.public_subnet.id
-  vpc_security_group_ids = [aws_security_group.app_server_sg.id]
+  vpc_security_group_ids = [aws_security_group.kind_cluster_sg.id]
   key_name               = aws_key_pair.deployer_key.key_name
   iam_instance_profile   = data.aws_iam_instance_profile.labInstanceProfile.name
 
-  tags = { Name = "${var.target_env}-app-server" }
+  tags = { Name = "${var.target_env}-kind-cluster" }
 
-  user_data = file("${path.module}/install_docker.sh")
+  user_data = file("${path.module}/install_docker_kind.sh")
   
   user_data_replace_on_change = true
 

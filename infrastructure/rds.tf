@@ -10,7 +10,7 @@ resource "aws_security_group" "rds_sg" {
     to_port     = 5432
     protocol    = "tcp"
     # cidr_blocks = [data.aws_vpc.selected.cidr_block]
-    security_groups = [aws_security_group.app_server_sg.id]
+    security_groups = [aws_security_group.kind_cluster_sg.id]
   }
 
   egress {
