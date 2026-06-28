@@ -5,3 +5,4 @@
 # Local .env file containing sensitive information
 .env
 *.pem
+backend/db-config.json

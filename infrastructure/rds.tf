@@ -35,7 +35,8 @@ resource "aws_db_instance" "postgres_db" {
 
   db_name  = var.db_name
   username = var.db_username
-  password = var.db_password
+  # password = var.db_password
+  password = random_password.db_password.result
 
   db_subnet_group_name   = aws_db_subnet_group.rds.name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
@@ -43,4 +44,16 @@ resource "aws_db_instance" "postgres_db" {
   publicly_accessible    = false
 
   tags = { Name = "${var.target_env}-postgres-db" }
+}
+
+resource "local_file" "db_config" {
+  filename = "../backend/db-config.json"
+
+  content = jsonencode({
+    host     = aws_db_instance.postgres_db.address
+    port     = aws_db_instance.postgres_db.port
+    database = aws_db_instance.postgres_db.db_name
+    username = var.db_username
+    password = random_password.db_password.result
+  })
 }

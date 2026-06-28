@@ -51,6 +51,12 @@ variable "target_env" {
   }
 }
 
+resource "random_password" "db_password" {
+  length  = 20
+  special = true
+  override_special = "!#$%^&*()-_=+"
+}
+
 # ==========================================
 # 4. DATABASE VARIABLES (Data Tier)
 # ==========================================
@@ -61,12 +67,12 @@ variable "db_username" {
   default     = "dbadmin"
 }
 
-variable "db_password" {
-  description = "Administrator master password for the RDS instance. Must be at least 8 characters."
-  type        = string
-  sensitive   = true # Hides the value from printing in the terminal and deployment logs
-  default     = "s3cr3t#123"
-}
+# variable "db_password" {
+#   description = "Administrator master password for the RDS instance. Must be at least 8 characters."
+#   type        = string
+#   sensitive   = true # Hides the value from printing in the terminal and deployment logs
+#   default     = "s3cr3t#123"
+# }
 
 variable "db_name" {
   description = "Name of the initial database to create in the RDS instance"
